@@ -1,3 +1,3 @@
-module github.com/hreluz/spanish_character_remover
+module github.com/hreluz/language-characters-replacer
 
 go 1.22.0

@@ -1,7 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"github.com/hreluz/language-characters-replacer/language"
+	"github.com/hreluz/language-characters-replacer/replacer"
+)
 
 func main() {
-	fmt.Println("Hello world")
+	spanishText := "áañeéiíóouú"
+	replacer.Exec(spanishText, *language.NewSpanishLanguage())
 }
