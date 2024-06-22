@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -10,20 +11,43 @@ import (
 )
 
 func main() {
-	originalString, _ := interaction.GetUserInput("Enter your string: ")
-	var modifiedString string
+	option := ""
 
-	interaction.ShowAvailableActions()
-	choice := interaction.GetActionChoice()
+	languageFn, err := getLanguageFn()
 
-	switch choice {
-	case language.Spanish:
-		modifiedString = replacer.Exec(originalString, *language.NewSpanishLanguage())
-	default:
-		fmt.Printf("%v is not implemented.\n", choice)
+	if err != nil {
+		fmt.Print(err.Error())
 		os.Exit(1)
 	}
 
-	fmt.Printf("Original string: %s ", originalString)
-	fmt.Printf("\nReplaced string: %s ", modifiedString)
+	for option != "N" {
+		option = execute(languageFn)
+	}
+}
+
+func getLanguageFn() (replacer.ReturnFn, error) {
+	interaction.ShowLanguagesActions()
+	chosenLanguage := interaction.GetActionChoice()
+	lF := func(s string) string { return "" }
+
+	switch chosenLanguage {
+	case language.Spanish:
+		lF = replacer.Exec(*language.NewSpanishLanguage())
+	default:
+		errorString := fmt.Sprintf("%v is not implemented.\n", chosenLanguage)
+		return lF, errors.New(errorString)
+	}
+
+	return lF, nil
+}
+
+func execute(lFn replacer.ReturnFn) string {
+	originalString, _ := interaction.GetUserInput("Enter your string: ")
+	modifiedString := lFn(originalString)
+
+	fmt.Printf("Original string: %s\n", originalString)
+	fmt.Printf("Replaced string: %s \n", modifiedString)
+
+	option, _ := interaction.GetUserInput("Would you like to transform another string (Y/N): ")
+	return option
 }

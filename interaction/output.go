@@ -6,7 +6,7 @@ import (
 	"github.com/hreluz/language-characters-replacer/language"
 )
 
-func ShowAvailableActions() {
+func ShowLanguagesActions() {
 	fmt.Println("Choose Language: ")
 	fmt.Println("-------------------------------")
 
