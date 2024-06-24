@@ -26,13 +26,14 @@ func main() {
 }
 
 func getLanguageFn() (replacer.ReturnFn, error) {
+	var replacer replacer.Replacer = replacer.ConcreteReplacer{}
 	interaction.ShowLanguagesActions()
 	chosenLanguage := interaction.GetActionChoice()
 	lF := func(s string) string { return "" }
 
 	switch chosenLanguage {
 	case language.Spanish:
-		lF = replacer.Exec(*language.NewSpanishLanguage())
+		lF = replacer.Replace(*language.NewSpanishLanguage())
 	default:
 		errorString := fmt.Sprintf("%v is not implemented.\n", chosenLanguage)
 		return lF, errors.New(errorString)

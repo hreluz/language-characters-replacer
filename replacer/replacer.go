@@ -12,7 +12,7 @@ type Replacer interface {
 	Replace(language.Language) ReturnFn
 }
 
-func Exec(l language.Language) ReturnFn {
+func exec(l language.Language) ReturnFn {
 	return func(s string) string {
 		var sb strings.Builder
 
@@ -26,4 +26,12 @@ func Exec(l language.Language) ReturnFn {
 
 		return sb.String()
 	}
+}
+
+// ConcreteReplacer is a concrete type that implements the Replacer interface
+type ConcreteReplacer struct{}
+
+// Replace method implements the Replacer interface for ConcreteReplacer
+func (cr ConcreteReplacer) Replace(l language.Language) ReturnFn {
+	return exec(l)
 }
